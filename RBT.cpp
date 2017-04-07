@@ -1,5 +1,10 @@
+#include "RBT.h"
 
 using namespace std;
+
+RedBlackTree::RedBlackTree(){
+  head = NULL;
+}
 
 void RBT::print(Node* current, int indent){
   if(current->getRight()){

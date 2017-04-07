@@ -1,5 +1,6 @@
-#include <iostream>
 
+#include <iostream>
+#include "Node.h"
 using namespace std;
 
 Node::Node(int newdata){

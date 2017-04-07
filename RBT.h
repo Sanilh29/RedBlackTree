@@ -1,15 +1,13 @@
 
 class RBT{
  public:
-  RedBlackTree();
-  ~RedBlackTree();
-  rotateRight();
-  rotateLeft();
-  print(Node* current, int indent = 0);
-  add(Node* current, int data);
+  RBT();
+  ~RBT();
+  void rotateRight();
+  void rotateLeft();
+  void print(Node* current, int indent = 0);
+  void add(Node* current, int data);
   Node* getHead();
  private:
   Node* head;
-  
-
-}
+};
