@@ -1,8 +1,9 @@
 #include "RBT.h"
+#include <iostream>
 
 using namespace std;
 
-RedBlackTree::RedBlackTree(){
+RBT::RBT(){
   head = NULL;
 }
 
@@ -19,6 +20,6 @@ void RBT::print(Node* current, int indent){
   }
 }
 
-Node* RedBlackTree::getHead(){
+Node* RBT::getHead(){
   return head;
 }
