@@ -8,11 +8,13 @@ Node::Node(int newdata){
   left = NULL;
   right = NULL;
   parent= NULL;
-  //red = true;
+  red = true;
 }
 
 Node::Node(){
-
+  cout << "What's the data of the node?" << endl;
+  cin >> data;
+  red = true;
 }
 
 Node::~Node(){
@@ -37,12 +39,48 @@ int Node::getData(){
 
 void Node::setLeft(Node* node){//sets the left node
   left = node;
+  if (left){
+    left->setIsRight(false);
+    left->setParent(this);
+  }  
 }
 
 void Node::setRight(Node* node){//sets the right node
   right = node;
-}
+  if (right){
+    right->setIsRight(true);
+    right->setParent(this);
+  }
+ }
 
 void Node::setParent(Node* node){
   parent = node;
+}
+
+Node* Node::getUncle(){
+  //need
+  if (parent->getParent() != NULL){
+    if (parent->checkRight()){
+      return parent->getParent()->getLeft();
+    }
+    else{
+      return parent->getParent()->getRight();
+    }
+  }
+}
+
+bool Node::checkRed(){
+  return red;
+}
+
+void Node::setRed(bool isRed){
+  //need
+}
+
+bool Node::checkRight(){
+  return rightChild;
+}
+
+void Node::setIsRight(bool isRight){
+  //need
 }
