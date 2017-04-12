@@ -39,7 +39,7 @@ int Node::getData(){
 
 void Node::setLeft(Node* node){//sets the left node
   left = node;
-  if (left){
+  if (left!= NULL){
     left->setIsRight(false);
     left->setParent(this);
   }  
@@ -47,7 +47,7 @@ void Node::setLeft(Node* node){//sets the left node
 
 void Node::setRight(Node* node){//sets the right node
   right = node;
-  if (right){
+  if (right != NULL){
     right->setIsRight(true);
     right->setParent(this);
   }
@@ -58,14 +58,18 @@ void Node::setParent(Node* node){
 }
 
 Node* Node::getUncle(){
-  //need
-  if (parent->getParent() != NULL){
-    if (parent->checkRight()){
-      return parent->getParent()->getLeft();
+  if (parent != NULL){
+    if (parent->getParent() != NULL){
+      if (parent->getParent()->checkRight()){
+	return parent->getParent()->getRight();
+      }
+      else{
+	return parent->getParent()->getLeft();
+      }
     }
-    else{
-      return parent->getParent()->getRight();
-    }
+  }
+  else {
+    return NULL;
   }
 }
 
@@ -74,7 +78,7 @@ bool Node::checkRed(){
 }
 
 void Node::setRed(bool isRed){
-  //need
+  red = isRed;
 }
 
 bool Node::checkRight(){
@@ -82,5 +86,5 @@ bool Node::checkRight(){
 }
 
 void Node::setIsRight(bool isRight){
-  //need
+  rightChild = isRight;
 }
