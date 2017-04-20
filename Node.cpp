@@ -81,7 +81,7 @@ void Node::setRed(bool isRed){
   red = isRed;
 }
 
-bool Node::checkRight(){
+bool Node::isRight(){
   return rightChild;
 }
 

@@ -1,4 +1,4 @@
-
+B
 class Node{
  public:
   Node(int newdata);
@@ -14,7 +14,7 @@ class Node{
   void setParent(Node* node);
   bool checkRed();
   void setRed(bool isRed);
-  bool checkRight();
+  bool isRight();
   void setIsRight(bool isRight);
  private:
   int data;
