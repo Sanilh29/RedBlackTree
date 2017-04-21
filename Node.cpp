@@ -60,7 +60,7 @@ void Node::setParent(Node* node){
 Node* Node::getUncle(){
   if (parent != NULL){
     if (parent->getParent() != NULL){
-      if (parent->getParent()->checkRight()){
+      if (parent->getParent()->isRight()){
 	return parent->getParent()->getRight();
       }
       else{
@@ -73,7 +73,7 @@ Node* Node::getUncle(){
   }
 }
 
-bool Node::checkRed(){
+bool Node::isRed(){
   return red;
 }
 

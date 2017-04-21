@@ -1,4 +1,4 @@
-B
+
 class Node{
  public:
   Node(int newdata);
@@ -12,7 +12,7 @@ class Node{
   void setLeft(Node* node); //sets the pointer to the next node
   void setRight(Node* node);
   void setParent(Node* node);
-  bool checkRed();
+  bool isRed();
   void setRed(bool isRed);
   bool isRight();
   void setIsRight(bool isRight);
