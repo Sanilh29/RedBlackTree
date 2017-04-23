@@ -13,6 +13,7 @@ RBT::~RBT(){
 
 void RBT::fixTree(Node* current, Node* &head){
   if (current->getParent() != NULL){//case 4
+    cout << "gdf" << endl;
     if(current->isRed() && current->getParent()->isRed()){
       if (current->getParent()->isRight() && !current->isRight()){
 	rotateRight(current->getParent(), head);
@@ -40,7 +41,6 @@ void RBT::fixTree(Node* current, Node* &head){
 	    current->getParent()->getParent()->setRed(true);
 	    current->getParent()->setRed(false);
 	    rotateRight(current->getParent()->getParent(),head);
-	    // rotateLeft(current);
 	  }
 	  else{
 	    current->getParent()->getParent()->setRed(true);
@@ -51,6 +51,7 @@ void RBT::fixTree(Node* current, Node* &head){
 	}
       }
       else{
+	cout << "ello" << endl;
 	if (!current->getParent()->isRed()){
 	  if(current->isRight()){
 	    if(current->getParent()->isRight()){
@@ -67,6 +68,7 @@ void RBT::fixTree(Node* current, Node* &head){
 	    }
 	  }
 	  else{
+	    cout << "hello" << endl;
 	    if(current->getParent()->isRight()){
 	      current->getParent()->getParent()->setRed(true);
 	      current->getParent()->setRed(false);
@@ -74,6 +76,7 @@ void RBT::fixTree(Node* current, Node* &head){
 	      // rotateLeft(current);
 	    }
 	    else{
+	      cout << "hi" << endl;
 	      current->getParent()->getParent()->setRed(true);
 	      current->getParent()->setRed(false);
 	      rotateLeft(current->getParent()->getParent(), head);
@@ -82,10 +85,13 @@ void RBT::fixTree(Node* current, Node* &head){
 	  }
 	}
 	else{
+	  cout << "hi" << endl;
 	  current->getParent()->getParent()->setRed(true);
 	  current->getParent()->setRed(false);
 	  current->getUncle()->setRed(false);
+	  cout << "boo" << endl;
 	  fixTree(current->getParent()->getParent(), head);
+	  cout << "bee" << endl;
 	}
       }
     }
@@ -138,7 +144,7 @@ void RBT::add(Node* current, int number){
       else{
 	Node* newNode = new Node(number);
 	current->setLeft(newNode);
-	fixTree(newNode,head);
+	fixTree(newNode, head);
       }
     }
     if (number > current->getData()){
@@ -149,12 +155,11 @@ void RBT::add(Node* current, int number){
       else{
 	Node* newNode = new Node(number);
 	current->setRight(newNode);
-	fixTree(newNode,head);
+	fixTree(newNode, head);
       }
     }
   }
 }
-
 
 void RBT::print(Node* current, int indent){
   if(current->getRight()){

@@ -15,6 +15,7 @@ Node::Node(){
   cout << "What's the data of the node?" << endl;
   cin >> data;
   red = true;
+  parent = NULL;
 }
 
 Node::~Node(){
