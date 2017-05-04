@@ -1,3 +1,4 @@
+//sanil hattangadi, main function that allows users to input file or add numbers manually
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -51,21 +52,21 @@ int main(){
   RBT* tree = new RBT();
   char input[128];
   bool running = true;
-  while(running == true){
-    cout << "Enter a command: add or print." << endl;
+  while(running == true){//while program is running
+    cout << "Enter a command: add, print, or quit." << endl;
     cin.getline(input, 128);
-    if(0==strcmp(input, "add")){
-      ifstream stream;
+    if(0==strcmp(input, "add")){//see if input is add
+      ifstream stream;//initialize variables
       bool isFile;
       checkInput(stream, isFile);
-      addNumbers(isFile ? stream : cin, tree);      
+      addNumbers(isFile ? stream : cin, tree);//add the numbers       
       if(isFile) stream.close();
       cin.ignore();
     }
-    else if(0==strcmp(input, "print")){
-	tree->print(tree->getHead());
+    else if(0==strcmp(input, "print")){//if print is inputted, 
+      tree->print(tree->getHead());//print at the head
     } 
-    else if(0==strcmp(input, "quit")){
+    else if(0==strcmp(input, "quit")){//end the program
       running = false;
     }
   }

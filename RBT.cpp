@@ -1,43 +1,44 @@
+//sanil hattangadi , creates the algorithm that runs the methods
 #include "RBT.h"
 #include <iostream>
 
 using namespace std;
 
-RBT::RBT(){
+RBT::RBT(){//constructor
   head = NULL;
 }
 
-RBT::~RBT(){
+RBT::~RBT(){//deconstructor
 
 }
 
-void RBT::fixTree(Node* current, Node* &head){
-  if (current != head){//case 4
-    if(current->isRed() && current->getParent()->isRed()){
-      if (current->getParent()->isRight() && !current->isRight()){
+void RBT::fixTree(Node* current, Node* &head){//fix all the methods to balance tree
+  if (current != head){//if current is not the head, only node
+    if(current->isRed() && current->getParent()->isRed()){//if current and parent is red
+      if (current->getParent()->isRight() && !current->isRight()){//if parent is right, but child is not
 	rotateRight(current->getParent());
 	fixTree(current->getRight(), head);
       }
-      else if (!current->getParent()->isRight() && current->isRight()){
+      else if (!current->getParent()->isRight() && current->isRight()){//if parent is not right, but child is
 	rotateLeft(current->getParent());
 	fixTree(current->getLeft(), head);
       }
-      else if(!current->getUncle()){
-	if(current->isRight()){
+      else if(!current->getUncle()){//if uncle is null
+	if(current->isRight()){//if current is right
 	  current->getParent()->getParent()->setRed(true);
 	  current->getParent()->setRed(false);
 	  rotateLeft(current->getParent()->getParent());
 	 
 	}
-	else{
+	else{//if child is left
 	  current->getParent()->getParent()->setRed(true);
 	  current->getParent()->setRed(false);
 	  rotateRight(current->getParent()->getParent());
 	 
 	}
       }
-      else if (!current->getParent()->isRed()){
-	if(current->isRight()){
+      else if (!current->getUncle()->isRed()){//if uncle is red
+	if(current->isRight()){//if child is right
 	  current->getParent()->getParent()->setRed(true);
 	  current->getParent()->setRed(false);
 	  rotateLeft(current->getParent()->getParent());
@@ -45,14 +46,14 @@ void RBT::fixTree(Node* current, Node* &head){
 	else{//if the current is left
 	  current->getParent()->getParent()->setRed(true);
 	  current->getParent()->setRed(false);
-	  rotateLeft(current->getParent()->getParent());
-	 
+	  rotateRight(current->getParent()->getParent());	 
 	}
       }
       else{//if parent is red
 	current->getParent()->getParent()->setRed(true);
 	current->getParent()->setRed(false);
 	current->getUncle()->setRed(false);
+	print(head);
 	fixTree(current->getParent()->getParent(), head);
       }
     }
@@ -60,7 +61,7 @@ void RBT::fixTree(Node* current, Node* &head){
   head->setRed(false);
 }
 
-void RBT::rotateRight(Node* current){ 
+void RBT::rotateRight(Node* current){ //this rotates the tree to the right
   Node* nhead = current->getLeft();
   if (current == head ){
     head = nhead;
@@ -71,11 +72,11 @@ void RBT::rotateRight(Node* current){
   else{
     current->getParent()->setLeft(nhead);
   }
-  current->setLeft(nhead->getRight());
+  current->setLeft(nhead->getRight());//sets the right and left after rotation
   nhead->setRight(current);
 }
 
-void RBT::rotateLeft(Node* current){
+void RBT::rotateLeft(Node* current){//rotates the tree to the left
   Node* nhead = current->getRight();
   if (current == head){
     head = nhead;
@@ -86,19 +87,19 @@ void RBT::rotateLeft(Node* current){
   else{
     current->getParent()->setLeft(nhead);
   }
-  current->setRight(nhead->getLeft());
+  current->setRight(nhead->getLeft());//sets the left and right after rotation
   nhead->setLeft(current);
 }
 
-void RBT::add(Node* current, int number){
+void RBT::add(Node* current, int number){//adds the number like binary search tree
   if (head == NULL){  
     head = new Node(number);
     head->setRed(true);
     fixTree(head, head);
   }
   else{
-    if (number < current->getData()){
-      if (current->getLeft()){
+    if (number < current->getData()){//number is less than data inputted in tree
+      if (current->getLeft()){//if its not null
 	add(current->getLeft(),number);
       }
       else{
@@ -107,8 +108,8 @@ void RBT::add(Node* current, int number){
 	fixTree(newNode, head);
       }
     }
-    if (number > current->getData()){
-      if (current->getRight()){
+    if (number > current->getData()){//number is greater than data inputted in tree
+      if (current->getRight()){//if right is not null
 	add(current->getRight(),number);
       }
       else{
@@ -120,7 +121,7 @@ void RBT::add(Node* current, int number){
   }
 }
 
-void RBT::print(Node* current, int indent){
+void RBT::print(Node* current, int indent){//print the tree
   if(current->getRight()){
     print(current->getRight(), indent+1);
   }
