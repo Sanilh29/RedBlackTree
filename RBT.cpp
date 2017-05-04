@@ -12,95 +12,55 @@ RBT::~RBT(){
 }
 
 void RBT::fixTree(Node* current, Node* &head){
-  if (current->getParent() != NULL){//case 4
-    cout << "gdf" << endl;
+  if (current != head){//case 4
     if(current->isRed() && current->getParent()->isRed()){
       if (current->getParent()->isRight() && !current->isRight()){
-	rotateRight(current->getParent(), head);
+	rotateRight(current->getParent());
+	fixTree(current->getRight(), head);
       }
-      if (!current->getParent()->isRight() && current->isRight()){
-	rotateLeft(current->getParent(), head);
+      else if (!current->getParent()->isRight() && current->isRight()){
+	rotateLeft(current->getParent());
+	fixTree(current->getLeft(), head);
       }
-      if(!current->getUncle()){
+      else if(!current->getUncle()){
 	if(current->isRight()){
-	  if(current->getParent()->isRight()){
-	    current->getParent()->getParent()->setRed(true);
-	    current->getParent()->setRed(false);
-	    rotateLeft(current->getParent()->getParent(),head);
-	    // rotateLeft(current);
-	  }
-	  else{
-	    current->getParent()->getParent()->setRed(true);
-	    current->getParent()->setRed(false);
-	    rotateRight(current->getParent()->getParent(), head);
-	    fixTree(current->getLeft(), head);
-	  }
-	}
-	else{
-	  if(current->getParent()->isRight()){
-	    current->getParent()->getParent()->setRed(true);
-	    current->getParent()->setRed(false);
-	    rotateRight(current->getParent()->getParent(),head);
-	  }
-	  else{
-	    current->getParent()->getParent()->setRed(true);
-	    current->getParent()->setRed(false);
-	    rotateLeft(current->getParent()->getParent(), head);
-	    fixTree(current->getLeft(), head);
-	  }
-	}
-      }
-      else{
-	cout << "ello" << endl;
-	if (!current->getParent()->isRed()){
-	  if(current->isRight()){
-	    if(current->getParent()->isRight()){
-	      current->getParent()->getParent()->setRed(true);
-	      current->getParent()->setRed(false);
-	      rotateLeft(current->getParent()->getParent(),head);
-	      // rotateLeft(current);
-	    }
-	    else{
-	      current->getParent()->getParent()->setRed(true);
-	      current->getParent()->setRed(false);
-	      rotateRight(current->getParent()->getParent(), head);
-	      fixTree(current->getLeft(), head);
-	    }
-	  }
-	  else{
-	    cout << "hello" << endl;
-	    if(current->getParent()->isRight()){
-	      current->getParent()->getParent()->setRed(true);
-	      current->getParent()->setRed(false);
-	      rotateRight(current->getParent()->getParent(),head);
-	      // rotateLeft(current);
-	    }
-	    else{
-	      cout << "hi" << endl;
-	      current->getParent()->getParent()->setRed(true);
-	      current->getParent()->setRed(false);
-	      rotateLeft(current->getParent()->getParent(), head);
-	      fixTree(current->getLeft(), head);
-	    }
-	  }
-	}
-	else{
-	  cout << "hi" << endl;
 	  current->getParent()->getParent()->setRed(true);
 	  current->getParent()->setRed(false);
-	  current->getUncle()->setRed(false);
-	  cout << "boo" << endl;
-	  fixTree(current->getParent()->getParent(), head);
-	  cout << "bee" << endl;
+	  rotateLeft(current->getParent()->getParent());
+	 
+	}
+	else{
+	  current->getParent()->getParent()->setRed(true);
+	  current->getParent()->setRed(false);
+	  rotateRight(current->getParent()->getParent());
+	 
 	}
       }
+      else if (!current->getParent()->isRed()){
+	if(current->isRight()){
+	  current->getParent()->getParent()->setRed(true);
+	  current->getParent()->setRed(false);
+	  rotateLeft(current->getParent()->getParent());
+	}
+	else{//if the current is left
+	  current->getParent()->getParent()->setRed(true);
+	  current->getParent()->setRed(false);
+	  rotateLeft(current->getParent()->getParent());
+	 
+	}
+      }
+      else{//if parent is red
+	current->getParent()->getParent()->setRed(true);
+	current->getParent()->setRed(false);
+	current->getUncle()->setRed(false);
+	fixTree(current->getParent()->getParent(), head);
+      }
     }
-    //here
   }
   head->setRed(false);
 }
 
-void RBT::rotateRight(Node* current ,Node* &head){
+void RBT::rotateRight(Node* current){ 
   Node* nhead = current->getLeft();
   if (current == head ){
     head = nhead;
@@ -115,7 +75,7 @@ void RBT::rotateRight(Node* current ,Node* &head){
   nhead->setRight(current);
 }
 
-void RBT::rotateLeft(Node* current, Node* &head){
+void RBT::rotateLeft(Node* current){
   Node* nhead = current->getRight();
   if (current == head){
     head = nhead;
@@ -150,7 +110,6 @@ void RBT::add(Node* current, int number){
     if (number > current->getData()){
       if (current->getRight()){
 	add(current->getRight(),number);
-	//fixTree(current, 
       }
       else{
 	Node* newNode = new Node(number);

@@ -4,8 +4,8 @@ class RBT{
  public:
   RBT();
   ~RBT();
-  void rotateRight(Node* current, Node* &head);
-  void rotateLeft(Node* current, Node* &head);
+  void rotateRight(Node* current);
+  void rotateLeft(Node* current);
   void print(Node* current, int indent = 0);
   void add(Node* current, int data);
   void fixTree(Node* current, Node* &head);
