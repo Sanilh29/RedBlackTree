@@ -12,6 +12,62 @@ RBT::~RBT(){//deconstructor
 
 }
 
+Node* RBT::search(int number, Node* current){
+  if (!current){
+    current  = head;
+  }
+  if(number < current->getData()){
+    if (current->getLeft()){
+      return search(number, current->getLeft());
+    }
+    else return NULL;
+  }
+  else if(number > current->getData()){
+    if (current->getRight()){
+      return search(number, current->getRight());
+    }
+    else return NULL;
+  }
+  else return current;
+}
+
+void RBT::fixToBlack(Node* black, Node* parent){
+
+}
+
+void RBT::remove(Node* deleted){
+  if (deleted->getLeft() && deleted->getRight()){
+    Node* swap = deleted->getRight();
+    while(swap->getLeft()){
+      swap = swap->getLeft();
+    }
+    deleted->setData(swap->getData());
+    deleted = swap;
+  }
+  Node* parent = deleted->getParent();
+  Node* child = deleted->getRight();
+  if (child == NULL){
+    child = deleted->getLeft();
+  }
+  if (deleted == head){
+    head = child;
+  }
+  if (deleted->isRight()){
+    parent->setRight(child);
+  }
+  else{
+    parent->setLeft(child);
+  }
+  if(!deleted->isRed()){
+    if(child->isRed()){
+      child->setRed(false);
+    }
+    else {
+      // fixToBlack(child, parent);
+    }
+  }
+}
+
 void RBT::fixTree(Node* current, Node* &head){//fix all the methods to balance tree
   if (current != head){//if current is not the head, only node
     if(current->isRed() && current->getParent()->isRed()){//if current and parent is red

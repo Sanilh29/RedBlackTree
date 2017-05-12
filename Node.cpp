@@ -38,6 +38,10 @@ int Node::getData(){
   return data;
 }
 
+void Node::setData(int newData){
+  data = newData;
+}
+
 void Node::setLeft(Node* node){//sets the left node
   left = node;
   if (left!= NULL){

@@ -1,5 +1,6 @@
 //sanil hattangadi. header for the RBT that creates the variables and methods
 #include "Node.h"
+#include <iostream>
 
 class RBT{
  public://all the methods
@@ -11,6 +12,9 @@ class RBT{
   void add(Node* current, int data);
   void fixTree(Node* current, Node* &head);
   Node* getHead();
+  Node* search(int number, Node* current = NULL);
+  void fixToBlack(Node* black, Node* parent);
+  void remove (Node* deleted);
  private://the variables
   Node* head;
 };

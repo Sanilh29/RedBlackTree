@@ -53,7 +53,7 @@ int main(){
   char input[128];
   bool running = true;
   while(running == true){//while program is running
-    cout << "Enter a command: add, print, or quit." << endl;
+    cout << "Enter a command: add, delete, print, search, or quit." << endl;
     cin.getline(input, 128);
     if(0==strcmp(input, "add")){//see if input is add
       ifstream stream;//initialize variables
@@ -68,6 +68,41 @@ int main(){
     } 
     else if(0==strcmp(input, "quit")){//end the program
       running = false;
+    }
+    else if (0==strcmp(input, "delete")){
+      if (tree->getHead() == NULL){
+        cout << "There is nothing in the list!" << endl;
+      }
+      else{
+        cout << "What do you want me to delete?" << endl;
+        int number;
+        cin >> number;
+	cin.ignore();
+	Node* deleted = tree->search(number);
+	if(deleted){
+	  tree->remove(deleted);
+	}
+        else{
+	  cout << "The number: " << number << " is not in the tree." << endl;
+	}
+      }
+    }
+    else if (0==strcmp(input, "search")){
+      if(tree->getHead()==NULL){
+	cout << "It's an empty list" << endl;
+      }
+      else {
+	cout << "What number are you looking for?" << endl;
+	int number;
+	cin >> number;
+	cin.ignore();
+	if(tree->search(number)){
+	  cout << "The number: " << number << " is in the tree" << endl;
+	}
+	else{
+	  cout << "The number: " << number << " is not in the tree." << endl;
+	}
+      }
     }
   }
 }
