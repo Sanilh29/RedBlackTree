@@ -79,7 +79,12 @@ Node* Node::getUncle(){
 }
 
 bool Node::isRed(){
-  return red;
+  if(this){
+    return red;
+  }
+  else {
+    return false;
+  }
 }
 
 void Node::setRed(bool isRed){

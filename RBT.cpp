@@ -32,7 +32,71 @@ Node* RBT::search(int number, Node* current){
 }
 
 void RBT::fixToBlack(Node* black, Node* parent){
-
+  if(black == head){
+    return;
+  }
+  if(parent->getLeft() == black){
+    if(parent->getRight()->isRed()){
+      rotateLeft(parent);
+      parent->setRed(true);
+      parent->getParent()->setRed(false);
+      fixToBlack(black, parent);
+    }
+    else if(!parent->isRed() && 
+       !parent->getRight()->getLeft()->isRed() && 
+       !parent->getRight()->getRight()->isRed()){
+      parent->getRight()->setRed(true);
+      fixToBlack(parent, parent->getParent());
+    }
+    else if(!parent->getRight()->getLeft()->isRed() &&
+       !parent->getRight()->getRight()->isRed()){
+      parent->getRight()->setRed(true);
+      parent->setRed(false);
+    }
+    else if(!parent->getRight()->getRight()->isRed()){
+      rotateRight(parent->getRight());
+      parent->getRight()->setRed(false);
+      parent->getRight()->getRight()->setRed(true);
+      fixToBlack(black, parent);
+    }
+    else{
+      rotateLeft(parent);
+      parent->getParent()->getRight()->setRed(false);
+      parent->getParent()->setRed(parent->isRed());
+      parent->setRed(false);
+    }
+  }
+  else {
+    if(parent->getLeft()->isRed()){
+      rotateRight(parent);
+      parent->setRed(true);
+      parent->getParent()->setRed(false);
+      fixToBlack(black, parent);
+    }
+    else if (!parent->isRed() &&
+	!parent->getLeft()->getRight()->isRed() &&
+	!parent->getLeft() ->getLeft()->isRed()){
+      parent->getLeft()->setRed(true);
+      fixToBlack(parent, parent->getParent());
+    }
+    else if(!parent->getLeft()->getLeft()->isRed() &&
+       !parent->getLeft()->getRight()->isRed()){
+      parent->getLeft()->setRed(true);
+      parent->setRed(false);
+    }
+    else if(!parent->getLeft()->getLeft()->isRed()){
+      rotateLeft(parent->getLeft());
+      parent->getLeft()->setRed(false);
+      parent->getLeft()->getLeft()->setRed(true);
+      fixToBlack(black, parent);
+    }
+    else{
+      rotateRight(parent);
+      parent->getParent()->getLeft()->setRed(false);
+      parent->getParent()->setRed(parent->isRed());
+      parent->setRed(false);
+    }
+  }
 }
 
 void RBT::remove(Node* deleted){
@@ -52,7 +116,7 @@ void RBT::remove(Node* deleted){
   if (deleted == head){
     head = child;
   }
-  if (deleted->isRight()){
+  else if (deleted->isRight()){
     parent->setRight(child);
   }
   else{
@@ -63,55 +127,38 @@ void RBT::remove(Node* deleted){
       child->setRed(false);
     }
     else {
-      // fixToBlack(child, parent);
+      fixToBlack(child, parent);
     }
   }
 }
 
-void RBT::fixTree(Node* current, Node* &head){//fix all the methods to balance tree
-  if (current != head){//if current is not the head, only node
-    if(current->isRed() && current->getParent()->isRed()){//if current and parent is red
-      if (current->getParent()->isRight() && !current->isRight()){//if parent is right, but child is not
-	rotateRight(current->getParent());
-	fixTree(current->getRight(), head);
-      }
-      else if (!current->getParent()->isRight() && current->isRight()){//if parent is not right, but child is
+void RBT::fix(Node* current){//fix all the methods to balance tree
+  if (current->isRed() && current->getParent()->isRed()){
+    if (!current->getUncle()->isRed()){
+      if(current->isRight()  && !current->getParent()->isRight()){
 	rotateLeft(current->getParent());
-	fixTree(current->getLeft(), head);
+	current = current->getLeft();
       }
-      else if(!current->getUncle()){//if uncle is null
-	if(current->isRight()){//if current is right
-	  current->getParent()->getParent()->setRed(true);
-	  current->getParent()->setRed(false);
-	  rotateLeft(current->getParent()->getParent());
-	 
-	}
-	else{//if child is left
-	  current->getParent()->getParent()->setRed(true);
-	  current->getParent()->setRed(false);
-	  rotateRight(current->getParent()->getParent());
-	 
-	}
+      else if(!current->isRight() && current->getParent()->isRight()){
+	rotateRight(current->getParent());
+	current = current->getRight();
       }
-      else if (!current->getUncle()->isRed()){//if uncle is red
-	if(current->isRight()){//if child is right
-	  current->getParent()->getParent()->setRed(true);
-	  current->getParent()->setRed(false);
-	  rotateLeft(current->getParent()->getParent());
-	}
-	else{//if the current is left
-	  current->getParent()->getParent()->setRed(true);
-	  current->getParent()->setRed(false);
-	  rotateRight(current->getParent()->getParent());	 
-	}
-      }
-      else{//if parent is red
+      if(current->isRight()){
 	current->getParent()->getParent()->setRed(true);
 	current->getParent()->setRed(false);
-	current->getUncle()->setRed(false);
-	print(head);
-	fixTree(current->getParent()->getParent(), head);
+	rotateLeft(current->getParent()->getParent());
       }
+      else{
+	current->getParent()->getParent()->setRed(true);
+	current->getParent()->setRed(false);
+	rotateRight(current->getParent()->getParent());
+      }
+    }
+    else if (current->getUncle()->isRed()){
+      current->getUncle()->setRed(false);
+      current->getParent()->setRed(false);
+      current->getParent()->getParent()->setRed(true);
+      fix(current->getParent()->getParent());
     }
   }
   head->setRed(false);
@@ -151,7 +198,7 @@ void RBT::add(Node* current, int number){//adds the number like binary search tr
   if (head == NULL){  
     head = new Node(number);
     head->setRed(true);
-    fixTree(head, head);
+    fix(head);
   }
   else{
     if (number < current->getData()){//number is less than data inputted in tree
@@ -161,7 +208,7 @@ void RBT::add(Node* current, int number){//adds the number like binary search tr
       else{
 	Node* newNode = new Node(number);
 	current->setLeft(newNode);
-	fixTree(newNode, head);
+	fix(newNode);
       }
     }
     if (number > current->getData()){//number is greater than data inputted in tree
@@ -171,7 +218,7 @@ void RBT::add(Node* current, int number){//adds the number like binary search tr
       else{
 	Node* newNode = new Node(number);
 	current->setRight(newNode);
-	fixTree(newNode, head);
+	fix(newNode);
       }
     }
   }

@@ -64,8 +64,13 @@ int main(){
       cin.ignore();
     }
     else if(0==strcmp(input, "print")){//if print is inputted, 
-      tree->print(tree->getHead());//print at the head
-    } 
+      if (tree->getHead() == NULL){
+	cout << "There's nothing to print" << endl;
+      }
+      else{ 
+	tree->print(tree->getHead());//print at the head
+      } 
+    }
     else if(0==strcmp(input, "quit")){//end the program
       running = false;
     }

@@ -10,7 +10,7 @@ class RBT{
   void rotateLeft(Node* current);
   void print(Node* current, int indent = 0);
   void add(Node* current, int data);
-  void fixTree(Node* current, Node* &head);
+  void fix(Node* current);
   Node* getHead();
   Node* search(int number, Node* current = NULL);
   void fixToBlack(Node* black, Node* parent);
